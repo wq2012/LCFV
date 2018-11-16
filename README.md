@@ -13,3 +13,5 @@ Quan Wang, Xin Shen, Meng Wang, Kim L. Boyer, "Label Consistent Fisher Vectors f
 
 This library is also available at MathWorks:
 * https://www.mathworks.com/matlabcentral/fileexchange/47730-label-consistent-fisher-vectors-lcfv
+
+![pic](resources/LCFV_logo.png)
