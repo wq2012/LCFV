@@ -1,6 +1,7 @@
 # Label Consistent Fisher Vectors (LCFV)
 
 [![View Label Consistent Fisher Vectors (LCFV) on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/47730-label-consistent-fisher-vectors-lcfv)
+[![Octave application](https://github.com/wq2012/LCFV/actions/workflows/octave.yml/badge.svg)](https://github.com/wq2012/LCFV/actions/workflows/octave.yml)
 
 ## Table of Contents
 
