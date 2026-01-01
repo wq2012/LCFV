@@ -22,8 +22,10 @@ jobs:
     - name: Run tests
       run: |
         cd code
-        octave --no-gui --eval "test_cholcov2; test_solve_LCFV1; test_solve_LCFV2;"
+        octave --no-gui --eval "addpath('fisher_vector'); test_cholcov2; test_solve_LCFV1; test_solve_LCFV2; test_fv;"
     - name: Run demo
       run: |
         cd code
-        octave --no-gui run_demo.m
+        octave --no-gui run_LCFV_demo.m
+        octave --no-gui run_synthetic_end2end_demo.m
+        octave --no-gui run_cifar10_end2end_demo.m

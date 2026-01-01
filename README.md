@@ -7,54 +7,89 @@
 
 - [Overview](#overview)
 - [Installation](#installation)
+- [Demos](#demos)
 - [Usage](#usage)
-  - [Prepare Data](#prepare-data)
-  - [LCFV1](#lcfv1)
-  - [LCFV2](#lcfv2)
+  - [1. Extract Features & Compute Fisher Vectors](#1-extract-features--compute-fisher-vectors)
+  - [2. Apply Label Consistent Fisher Vectors (LCFV)](#2-apply-label-consistent-fisher-vectors-lcfv)
 - [Copyright and Citation](#copyright-and-citation)
 
 ## Overview
 
-LCFV is a method for adding supervised information to Fisher vectors. This package allows you to compute a transformation matrix to be applied to Fisher vectors, taking the original Fisher vectors and class labels as input.
+Label Consistent Fisher Vectors (LCFV) is a method for adding supervised information to Fisher vectors. This package is a standalone MATLAB/Octave implementation of LCFV, which allows you to compute a transformation matrix to be applied to Fisher vectors, taking the original Fisher vectors and class labels as input.
 
-**Note**: This package does **not** provide code for computing Fisher vectors. You must compute them yourself before using this package (e.g., using [INRIA's Fisher vector implementation](http://lear.inrialpes.fr/src/inria_fisher/)).
+This package provides a complete pipeline for:
+1.  **Feature Extraction**: Dense SIFT descriptors.
+2.  **Encoding**: Fisher Vector encoding (GMM + PCA).
+3.  **Optimization**: Learning the LCFV transformation matrix.
 
-![LCFV Logo](resources/LCFV_logo.png)
 
 ## Installation
 
-You can clone this repository or download it from MATLAB File Exchange.
+Simply clone the repository. The code is written in pure MATLAB/Octave and requires no external compilation.
 
 ```bash
-git clone https://github.com/wangquan/LCFV.git
+git clone https://github.com/wq2012/LCFV.git
 ```
+
+## Demos
+
+We provide three levels of demos:
+
+1.  **Synthetic End-to-End**: `code/run_synthetic_end2end_demo.m`
+    -   Generates synthetic data, trains GMM, computes FV, and applies LCFV.
+2.  **CIFAR-10 Subset Real World**: `code/run_cifar10_end2end_demo.m`
+    -   Extracts Dense SIFT from a subset of CIFAR-10 images, computes FV, and applies LCFV.
+3.  **LCFV Core**: `code/run_LCFV_demo.m`
+    -   Shows how to use `solve_LCFV1` and `solve_LCFV2` on pre-computed descriptors.
 
 ## Usage
 
-Please check `code/run_demo.m` for a complete example.
+### 1. Extract Features & Compute Fisher Vectors
 
-### Prepare Data
-
-You need:
-- `fv`: Fisher vectors matrix (dimension `N x D` or transposed).
-- `labels`: Class labels.
-
-### LCFV1
+You can use the built-in tools in `code/fisher_vector/` to generate features from images.
 
 ```matlab
-% G: Fisher vectors (D x N)
-% C: Label comparison matrix
-% alpha: Parameter (tune this!)
+addpath(genpath('code'));
 
-[M1, W1] = solve_LCFV1(G, C, alpha);
-LCFV1 = M1 * G;
+% 1. Extract Dense SIFT from an image
+img = imread('image.jpg');
+descs = compute_dense_sift(img); % 128 x N matrix
+
+% 2. Train GMM and PCA (using a set of training descriptors)
+% all_descs: 128 x N_total matrix
+K = 64; % Number of Gaussian components
+pca_dim = 64; % PCA dimension
+[w, mu, sigma, pca_transform, pca_mean] = fv_train(all_descs, K, pca_dim);
+
+% 3. Encode Fisher Vector for a new image
+% img_descs: 128 x N descriptors for the image
+% Apply PCA projection first
+img_descs_pca = pca_transform * bsxfun(@minus, img_descs, pca_mean);
+% Encode
+fv = fv_encode(img_descs_pca, w, mu, sigma);
 ```
 
-### LCFV2
+### 2. Apply Label Consistent Fisher Vectors (LCFV)
+
+Once you have Fisher Vectors for your training set, you can learn the LCFV transformation.
 
 ```matlab
+% G: D x N matrix of Fisher Vectors (column vectors)
+% labels: N x 1 vector of class labels
+% alpha: Regularization parameter (e.g., 10)
+
+% Create label comparison matrix
+C1 = repmat(labels, 1, length(labels));
+C2 = repmat(labels', length(labels), 1);
+C = double(C1 == C2);
+
+% LCFV-1 (Sparse)
+[M1, W1] = solve_LCFV1(G, C, alpha);
+lcfv_features = M1 * G;
+
+% LCFV-2 (Dense)
 M2 = solve_LCFV2(G, C, alpha);
-LCFV2 = M2 * G;
+lcfv_features = M2 * G;
 ```
 
 ## Copyright and Citation
