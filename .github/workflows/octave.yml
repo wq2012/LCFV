@@ -22,7 +22,7 @@ jobs:
     - name: Run tests
       run: |
         cd code
-        octave --no-gui --eval "addpath('fisher_vector'); test_cholcov2; test_solve_LCFV1; test_solve_LCFV2; test_fv;"
+        octave --no-gui --eval "addpath('fisher_vector'); test_cholcov2; test_solve_LCFV1; test_solve_LCFV2; test_fv; test_sift;"
     - name: Run demo
       run: |
         cd code
