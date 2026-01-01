@@ -11,17 +11,13 @@
   - [Prepare Data](#prepare-data)
   - [LCFV1](#lcfv1)
   - [LCFV2](#lcfv2)
-- [Citation](#citation)
+- [Copyright and Citation](#copyright-and-citation)
 
 ## Overview
 
 LCFV is a method for adding supervised information to Fisher vectors. This package allows you to compute a transformation matrix to be applied to Fisher vectors, taking the original Fisher vectors and class labels as input.
 
 **Note**: This package does **not** provide code for computing Fisher vectors. You must compute them yourself before using this package (e.g., using [INRIA's Fisher vector implementation](http://lear.inrialpes.fr/src/inria_fisher/)).
-
-The method is described in our ICPR 2014 paper:
-
-> Quan Wang, Xin Shen, Meng Wang, Kim L. Boyer, "Label Consistent Fisher Vectors for Supervised Feature Aggregation", 22nd International Conference on Pattern Recognition (ICPR), 2014.
 
 ![LCFV Logo](resources/LCFV_logo.png)
 
@@ -61,9 +57,28 @@ M2 = solve_LCFV2(G, C, alpha);
 LCFV2 = M2 * G;
 ```
 
-## Citation
+## Copyright and Citation
 
-If you use this code for academic purposes, please cite our paper:
+```
+Copyright (C) 2012 Quan Wang <wangq10@rpi.edu>,
+Signal Analysis and Machine Perception Laboratory,
+Department of Electrical, Computer, and Systems Engineering,
+Rensselaer Polytechnic Institute, Troy, NY 12180, USA
+```
+
+This software was developed as part of the following research. If you use this software in your research, please cite:
+
+**Plain Text:**
+
+> Quan Wang, Xin Shen, Meng Wang, and Kim L. Boyer.
+"Label consistent fisher vectors for supervised feature aggregation."
+In 2014 22nd International Conference on Pattern Recognition, pp. 3588-3593. IEEE, 2014.
+
+> Quan Wang.
+Exploiting Geometric and Spatial Constraints for Vision and Lighting Applications.
+Ph.D. dissertation, Rensselaer Polytechnic Institute, 2014.
+
+**BibTeX:**
 
 ```bibtex
 @inproceedings{wang2014label,
@@ -73,6 +88,13 @@ If you use this code for academic purposes, please cite our paper:
   pages={2507--2512},
   year={2014},
   organization={IEEE}
+}
+
+@phdthesis{wang2014exploiting,
+  title={Exploiting Geometric and Spatial Constraints for Vision and Lighting Applications},
+  author={Quan Wang},
+  year={2014},
+  school={Rensselaer Polytechnic Institute},
 }
 ```
 
