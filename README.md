@@ -6,6 +6,7 @@
 ## Table of Contents
 
 - [Overview](#overview)
+- [Video demo](#video-demo)
 - [Installation](#installation)
 - [Demos](#demos)
 - [Usage](#usage)
@@ -22,6 +23,11 @@ This package provides a complete pipeline for:
 2.  **Encoding**: Fisher Vector encoding (GMM + PCA).
 3.  **Optimization**: Learning the LCFV transformation matrix.
 
+![LCFV Logo](resources/LCFV_logo.png)
+
+## Video demo
+
+[![YouTube Demo](resources/youtube_demo.jpg)](https://www.youtube.com/watch?v=GTSMONLaRAg)
 
 ## Installation
 
