@@ -7,16 +7,18 @@
 
 - [Overview](#overview)
 - [Video demo](#video-demo)
-- [Installation](#installation)
-- [Demos](#demos)
-- [Usage](#usage)
-  - [1. Extract Features & Compute Fisher Vectors](#1-extract-features--compute-fisher-vectors)
-  - [2. Apply Label Consistent Fisher Vectors (LCFV)](#2-apply-label-consistent-fisher-vectors-lcfv)
+- [Matlab / Octave Implementation](#matlab--octave-implementation)
+  - [Installation](#installation)
+  - [Demos](#demos)
+  - [Usage](#usage)
+- [Python Implementation](#python-implementation)
+  - [Installation](#installation-1)
+  - [Usage](#usage-1)
 - [Copyright and Citation](#copyright-and-citation)
 
 ## Overview
 
-Label Consistent Fisher Vectors (LCFV) is a method for adding supervised information to Fisher vectors. This package is a standalone MATLAB/Octave implementation of LCFV, which allows you to compute a transformation matrix to be applied to Fisher vectors, taking the original Fisher vectors and class labels as input.
+Label Consistent Fisher Vectors (LCFV) is a method for adding supervised information to Fisher vectors. This package provides implementations in both **MATLAB/Octave** and **Python**.
 
 This package provides a complete pipeline for:
 1.  **Feature Extraction**: Dense SIFT descriptors.
@@ -29,7 +31,9 @@ This package provides a complete pipeline for:
 
 [![YouTube Demo](resources/youtube_demo.jpg)](https://www.youtube.com/watch?v=GTSMONLaRAg)
 
-## Installation
+## Matlab / Octave Implementation
+
+### Installation
 
 Simply clone the repository. The code is written in pure MATLAB/Octave and requires no external compilation.
 
@@ -37,7 +41,7 @@ Simply clone the repository. The code is written in pure MATLAB/Octave and requi
 git clone https://github.com/wq2012/LCFV.git
 ```
 
-## Demos
+### Demos
 
 We provide three levels of demos:
 
@@ -48,9 +52,9 @@ We provide three levels of demos:
 3.  **LCFV Core**: `code/run_LCFV_demo.m`
     -   Shows how to use `solve_LCFV1` and `solve_LCFV2` on pre-computed descriptors.
 
-## Usage
+### Usage
 
-### 1. Extract Features & Compute Fisher Vectors
+#### 1. Extract Features & Compute Fisher Vectors
 
 You can use the built-in tools in `code/fisher_vector/` to generate features from images.
 
@@ -75,7 +79,7 @@ img_descs_pca = pca_transform * bsxfun(@minus, img_descs, pca_mean);
 fv = fv_encode(img_descs_pca, w, mu, sigma);
 ```
 
-### 2. Apply Label Consistent Fisher Vectors (LCFV)
+#### 2. Apply Label Consistent Fisher Vectors (LCFV)
 
 Once you have Fisher Vectors for your training set, you can learn the LCFV transformation.
 
@@ -96,6 +100,57 @@ lcfv_features = M1 * G;
 % LCFV-2 (Dense)
 M2 = solve_LCFV2(G, C, alpha);
 lcfv_features = M2 * G;
+```
+
+## Python Implementation
+
+We provide a mirror implementation in Python located in the `python/` directory.
+
+### Installation
+
+Install from source:
+
+```bash
+cd python
+pip install .
+```
+
+Or install from PyPI:
+
+```
+pip install lcfv
+```
+
+
+### Usage
+
+```python
+import numpy as np
+import cv2
+from lcfv import compute_dense_sift, fv_encode, solve_lcfv1, fv_train
+
+# 1. Feature Extraction
+# compute_dense_sift expects HxW or HxWx3 image
+img = cv2.imread('image.jpg')
+descs = compute_dense_sift(img) # 128 x N numpy array
+
+# 2. Train GMM/PCA
+# all_descs: 128 x N_total
+K = 64
+w, mu, sigma, pca_transform, pca_mean = fv_train(all_descs, K, pca_dim=64)
+
+# 3. Encode
+# Apply PCA first
+descs_centered = all_descs - pca_mean[:, None]
+descs_pca = np.dot(pca_transform, descs_centered)
+
+fv = fv_encode(descs_pca, w, mu, sigma) # (2*D*K) x 1
+
+# 4. LCFV
+# G: D x N matrix of FVs
+# C: Label consistency matrix
+M1, W1 = solve_lcfv1(G, C, alpha=10)
+lcfv_feats = np.dot(M1, G)
 ```
 
 ## Copyright and Citation

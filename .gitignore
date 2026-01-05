@@ -1,3 +1,6 @@
 code/*.png
 downloads/
 data/**/*.jpg
+*.pyc
+dist/*
+*egg-info*
