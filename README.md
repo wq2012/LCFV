@@ -2,11 +2,16 @@
 
 [![View Label Consistent Fisher Vectors (LCFV) on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/47730-label-consistent-fisher-vectors-lcfv)
 [![Octave application](https://github.com/wq2012/LCFV/actions/workflows/octave.yml/badge.svg)](https://github.com/wq2012/LCFV/actions/workflows/octave.yml)
+[![Python Tests](https://github.com/wq2012/LCFV/actions/workflows/python.yml/badge.svg)](https://github.com/wq2012/LCFV/actions/workflows/python.yml)
+[![PyPI Version](https://img.shields.io/pypi/v/lcfv.svg)](https://pypi.python.org/pypi/lcfv)
+[![Python Versions](https://img.shields.io/pypi/pyversions/lcfv.svg)](https://pypi.org/project/lcfv)
+[![Downloads](https://static.pepy.tech/badge/lcfv)](https://pepy.tech/project/lcfv)
 
 ## Table of Contents
 
 - [Overview](#overview)
-- [Video demo](#video-demo)
+- [Video Demo](#video-demo)
+- [Code Structure](#code-structure)
 - [Matlab / Octave Implementation](#matlab--octave-implementation)
   - [Installation](#installation)
   - [Demos](#demos)
@@ -19,6 +24,8 @@
 ## Overview
 
 Label Consistent Fisher Vectors (LCFV) is a method for adding supervised information to Fisher vectors. This package provides implementations in both **MATLAB/Octave** and **Python**.
+[[paper](documentation/LCFV_ICPR_2014.pdf)]
+[[poster](documentation/LCFV_poster.pdf)]
 
 This package provides a complete pipeline for:
 1.  **Feature Extraction**: Dense SIFT descriptors.
@@ -30,6 +37,18 @@ This package provides a complete pipeline for:
 ## Video demo
 
 [![YouTube Demo](resources/youtube_demo.jpg)](https://www.youtube.com/watch?v=GTSMONLaRAg)
+
+## Code Structure
+
+- `code/`: MATLAB/Octave implementation.
+  - `fisher_vector/`: Standalone Fisher Vector tools (SIFT, GMM, FV, PCA).
+  - `solve_LCFV1.m`, `solve_LCFV2.m`: Core LCFV algorithms.
+  - `run_*.m`: Demo scripts.
+- `python/`: Python implementation.
+  - `lcfv/`: Python package source code.
+  - `tests/`: Unit tests.
+- `publish_pypi.sh`: Script to publish Python package to PyPI.
+- `setup.py`: Python package configuration.
 
 ## Matlab / Octave Implementation
 
@@ -156,7 +175,7 @@ lcfv_feats = np.dot(M1, G)
 ## Copyright and Citation
 
 ```
-Copyright (C) 2012 Quan Wang <wangq10@rpi.edu>,
+Copyright (C) 2013 Quan Wang <wangq10@rpi.edu>,
 Signal Analysis and Machine Perception Laboratory,
 Department of Electrical, Computer, and Systems Engineering,
 Rensselaer Polytechnic Institute, Troy, NY 12180, USA
